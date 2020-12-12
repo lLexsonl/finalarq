@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=C:\Program Files\Microchip\xc8\v2.31\pic\dat\en_msgs.txt -cn \
   -h+dist/default/production\RTC_DS1307.X.production.sym \
   --cmf=dist/default/production\RTC_DS1307.X.production.cmf -z -Q18F4550 \
-  -oC:\Users\yerso\AppData\Local\Temp\sdr4.2 --defsym=__MPLAB_BUILD=1 \
+  -oC:\Users\yerso\AppData\Local\Temp\sggg.2 --defsym=__MPLAB_BUILD=1 \
   -Mdist/default/production/RTC_DS1307.X.production.map -E1 \
   -ver=XC8 Compiler --acfsm=1493 -ASTACK=0F3h-07FFh -pstack=STACK \
   -ACODE=00h-07FFFh -ACONST=00h-07FFFh -ASMALLCONST=0800h-08FFhx120 \
@@ -22,7 +22,7 @@ Linker command line:
   -pfarbss=FARRAM,fardata=FARRAM,nvFARRAM=FARRAM \
   -pintsave_regs=BIGRAM,bigbss=BIGRAM,bigdata=BIGRAM -pbss=RAM \
   -pidata=CODE,irdata=CODE,ibigdata=CODE,ifardata=CODE -prparam=COMRAM \
-  C:\Users\yerso\AppData\Local\Temp\sdr4.o \
+  C:\Users\yerso\AppData\Local\Temp\sggg.o \
   dist/default/production\RTC_DS1307.X.production.o 
 
 Object code version is 3.11
@@ -32,7 +32,7 @@ Machine type is 18F4550
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-C:\Users\yerso\AppData\Local\Temp\sdr4.o
+C:\Users\yerso\AppData\Local\Temp\sggg.o
                 idloc                            200000   200000        8        0       5
                 config                           300000   300000        E        0       4
                 init                                  0        0        4        0       0
@@ -256,8 +256,8 @@ _I2C_Start                              text17       001706
 _I2C_Stop                               text16       00179E
 _I2C_Write                              text19       001762
 _LATD                                   (abs)        000F8C
-_LATD0                                  (abs)        007C60
 _LATD2                                  (abs)        007C62
+_LATD3                                  (abs)        007C63
 _LCD_Char                               text27       00138A
 _LCD_Clear                              text29       0017DA
 _LCD_Command                            text30       0013D6

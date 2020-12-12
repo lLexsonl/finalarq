@@ -17,8 +17,8 @@
 #define _XTAL_FREQ 8000000
 /*********************Definition of Ports********************************/
 
-#define RS LATD0                    /*PIN 0 of PORTB is assigned for register select Pin of LCD*/
-#define EN LATD2                 /*PIN 1 of PORTB is assigned for enable Pin of LCD */
+#define RS LATD2                    /*PIN 0 of PORTB is assigned for register select Pin of LCD*/
+#define EN LATD3                 /*PIN 1 of PORTB is assigned for enable Pin of LCD */
 #define ldata LATD                  /*PORTB(PB4-PB7) is assigned for LCD Data Output*/ 
 #define LCD_Port TRISD
 

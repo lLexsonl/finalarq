@@ -193,10 +193,10 @@
 [v _ACKEN ACKEN `VEb  1 e 0 @32300 ]
 "8916
 [v _ACKSTAT ACKSTAT `VEb  1 e 0 @32302 ]
-"9987
-[v _LATD0 LATD0 `VEb  1 e 0 @31840 ]
 "9993
 [v _LATD2 LATD2 `VEb  1 e 0 @31842 ]
+"9996
+[v _LATD3 LATD3 `VEb  1 e 0 @31843 ]
 "10275
 [v _PEN PEN `VEb  1 e 0 @32298 ]
 "10434
@@ -247,7 +247,7 @@
 [v main@Clock_type Clock_type `uc  1 a 1 86 ]
 "55
 [v main@F3531 F3531 `[7]uc  1 s 7 F3531 ]
-"135
+"134
 } 0
 "9 C:\Program Files\Microchip\xc8\v2.31\pic\sources\c99\common\nf_sprintf.c
 [v _sprintf sprintf `(i  1 e 2 0 ]

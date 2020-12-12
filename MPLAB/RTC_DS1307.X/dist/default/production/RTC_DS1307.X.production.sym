@@ -38,8 +38,8 @@ _hour C6 0 BANK0 1
 _nout B8 0 BANK0 1
 _I2C_Nack 17B2 0 CODE 0
 sprintf@s 60 0 BANK0 1
-_LATD0 7C60 0 ABS 0
 _LATD2 7C62 0 ABS 0
+_LATD3 7C63 0 ABS 0
 ?_isalpha 1 0 COMRAM 1
 _SSPIE 7CEB 0 ABS 0
 _SSPIF 7CF3 0 ABS 0
@@ -483,7 +483,7 @@ text11 1808 1809 CODE 1808 0
 %locals
 dist/default/production\RTC_DS1307.X.production.o
 C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18Fxxxx_DFP/1.2.26/xc8\pic\include\proc\pic18f4550.h
-C:\Users\yerso\AppData\Local\Temp\sdr4.s
+C:\Users\yerso\AppData\Local\Temp\sggg.s
 1385 15BC 0 CODE 0
 1387 15BC 0 CODE 0
 1390 15BC 0 CODE 0

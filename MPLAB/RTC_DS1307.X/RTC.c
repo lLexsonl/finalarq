@@ -62,7 +62,7 @@ void main()
     MSdelay(10);
     while(1)
     { 
-        MSdelay1(1000);
+        MSdelay1(2000);
         RTC_Read_Clock(0);              /*gives second,minute and hour*/
         I2C_Stop();
         if(hour & (1<<Clock_type)){     /* check clock is 12hr or 24hr */

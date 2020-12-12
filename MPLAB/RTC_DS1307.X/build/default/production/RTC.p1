@@ -549,7 +549,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18Fxxxx_DFP/1.2.26/xc8\pic\include\proc\pic18f4550.h: 8893: __asm("TOSU equ 0FFFh");
 [; <" TOSU equ 0FFFh ;# ">
 "17 ./Configuration_Header_File.h
-[p x PLLDIV  =  1        ]
+[p x PLLDIV  =  2        ]
 "18
 [p x CPUDIV  =  OSC1_PLL2 ]
 "19
@@ -625,7 +625,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "76
 [p x EBTRB  =  OFF       ]
 "17
-[p x PLLDIV  =  1        ]
+[p x PLLDIV  =  2        ]
 "18
 [p x CPUDIV  =  OSC1_PLL2 ]
 "19
@@ -895,8 +895,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;RTC.c: 64:     {
 {
 "65
-[; ;RTC.c: 65:         MSdelay1(1000);
-[e ( _MSdelay1 (1 -> -> 1000 `i `ui ]
+[; ;RTC.c: 65:         MSdelay1(2000);
+[e ( _MSdelay1 (1 -> -> 2000 `i `ui ]
 "66
 [; ;RTC.c: 66:         RTC_Read_Clock(0);
 [e ( _RTC_Read_Clock (1 -> -> 0 `i `uc ]
@@ -1096,14 +1096,14 @@ Version 4.0 HI-TECH Software Intermediate Code
  , $ -> -> 115 `ui `i 395
  396 ]
 [e :U 387 ]
-"134
-[; ;RTC.c: 134:     }
+"133
+[; ;RTC.c: 133:     }
 }
 [e :U 380 ]
 [e $U 381  ]
 [e :U 382 ]
-"135
-[; ;RTC.c: 135: }
+"134
+[; ;RTC.c: 134: }
 [e :UE 379 ]
 }
 [p f _sprintf 12582912 ]

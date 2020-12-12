@@ -5778,7 +5778,7 @@ extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 
 
 
-#pragma config PLLDIV = 1
+#pragma config PLLDIV = 2
 #pragma config CPUDIV = OSC1_PLL2
 #pragma config USBDIV = 1
 
@@ -5844,7 +5844,7 @@ extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 # 15 "./16x2_LCD_4bit_File.h"
 # 1 "./Configuration_Header_File.h" 1
 # 17 "./Configuration_Header_File.h"
-#pragma config PLLDIV = 1
+#pragma config PLLDIV = 2
 #pragma config CPUDIV = OSC1_PLL2
 #pragma config USBDIV = 1
 
@@ -5984,7 +5984,7 @@ void main()
     MSdelay(10);
     while(1)
     {
-        MSdelay1(1000);
+        MSdelay1(2000);
         RTC_Read_Clock(0);
         I2C_Stop();
         if(hour & (1<<Clock_type)){
@@ -6052,6 +6052,5 @@ void main()
                         break;
 
         }
-
     }
 }

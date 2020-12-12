@@ -5636,7 +5636,7 @@ extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 
 # 1 "./Configuration_Header_File.h" 1
 # 17 "./Configuration_Header_File.h"
-#pragma config PLLDIV = 1
+#pragma config PLLDIV = 2
 #pragma config CPUDIV = OSC1_PLL2
 #pragma config USBDIV = 1
 
@@ -5724,15 +5724,15 @@ void LCD_Init()
 void LCD_Command(unsigned char cmd )
 {
  LATD = (LATD & 0x0f) |(0xF0 & cmd);
- LATD0 = 0;
- LATD2 = 1;
- __nop();
  LATD2 = 0;
+ LATD3 = 1;
+ __nop();
+ LATD3 = 0;
  MSdelay(1);
     LATD = (LATD & 0x0f) | (cmd<<4);
- LATD2 = 1;
+ LATD3 = 1;
  __nop();
- LATD2 = 0;
+ LATD3 = 0;
  MSdelay(3);
 }
 
@@ -5742,15 +5742,15 @@ void LCD_Command(unsigned char cmd )
 void LCD_Char(unsigned char dat)
 {
  LATD = (LATD & 0x0f) | (0xF0 & dat);
- LATD0 = 1;
  LATD2 = 1;
+ LATD3 = 1;
  __nop();
- LATD2 = 0;
+ LATD3 = 0;
  MSdelay(1);
     LATD = (LATD & 0x0f) | (dat<<4);
- LATD2 = 1;
+ LATD3 = 1;
  __nop();
- LATD2 = 0;
+ LATD3 = 0;
  MSdelay(3);
 }
 void LCD_String(const char *msg)

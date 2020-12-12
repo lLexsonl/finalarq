@@ -1,7 +1,7 @@
 
 
 Microchip MPLAB XC8 Assembler V2.31 build 20201012212115 
-                                                                                               Fri Dec 11 18:45:49 2020
+                                                                                               Fri Dec 11 21:56:11 2020
 
 Microchip MPLAB XC8 C Compiler v2.31 (Free license) build 20201012212115 Og1 
      1                           	processor	18F4550
@@ -129,8 +129,8 @@ Microchip MPLAB XC8 C Compiler v2.31 (Free license) build 20201012212115 Og1
    115  0000                     _TRISB1	set	31897
    116  0000                     _TRISB0	set	31896
    117  0000                     _RCEN	set	32299
-   118  0000                     _LATD2	set	31842
-   119  0000                     _LATD0	set	31840
+   118  0000                     _LATD3	set	31843
+   119  0000                     _LATD2	set	31842
    120                           
    121                           	psect	smallconst
    122  000800                     __psmallconst:
@@ -748,10 +748,10 @@ Microchip MPLAB XC8 C Compiler v2.31 (Free license) build 20201012212115 Og1
    733  00086C  EC36  F00A         	call	_MSdelay	;wreg free
    734  000870                     l1998:
    735                           
-   736                           ;RTC.c: 64:     {;RTC.c: 65:         MSdelay1(1000);
-   737  000870  0E03               	movlw	3
+   736                           ;RTC.c: 64:     {;RTC.c: 65:         MSdelay1(2000);
+   737  000870  0E07               	movlw	7
    738  000872  6E02               	movwf	(MSdelay1@val+1)^0,c
-   739  000874  0EE8               	movlw	232
+   739  000874  0ED0               	movlw	208
    740  000876  6E01               	movwf	MSdelay1@val^0,c
    741  000878  EC11  F00A         	call	_MSdelay1	;wreg free
    742  00087C                     
@@ -3914,17 +3914,17 @@ Microchip MPLAB XC8 C Compiler v2.31 (Free license) build 20201012212115 Og1
   3819  001398  1007               	iorwf	??_LCD_Char^0,w,c
   3820  00139A  6E8C               	movwf	140,c	;volatile
   3821  00139C                     
-  3822                           ;LCD_16x2_4bit_mode.c: 42:  LATD0 = 1;
-  3823  00139C  808C               	bsf	3980,0,c	;volatile
+  3822                           ;LCD_16x2_4bit_mode.c: 42:  LATD2 = 1;
+  3823  00139C  848C               	bsf	3980,2,c	;volatile
   3824  00139E                     
-  3825                           ;LCD_16x2_4bit_mode.c: 43:  LATD2 = 1;
-  3826  00139E  848C               	bsf	3980,2,c	;volatile
+  3825                           ;LCD_16x2_4bit_mode.c: 43:  LATD3 = 1;
+  3826  00139E  868C               	bsf	3980,3,c	;volatile
   3827  0013A0                     
   3828                           ;LCD_16x2_4bit_mode.c: 44:  __nop();
   3829  0013A0  F000               	nop	
   3830  0013A2                     
-  3831                           ;LCD_16x2_4bit_mode.c: 45:  LATD2 = 0;
-  3832  0013A2  948C               	bcf	3980,2,c	;volatile
+  3831                           ;LCD_16x2_4bit_mode.c: 45:  LATD3 = 0;
+  3832  0013A2  968C               	bcf	3980,3,c	;volatile
   3833  0013A4                     
   3834                           ;LCD_16x2_4bit_mode.c: 46:  MSdelay(1);
   3835  0013A4  0E00               	movlw	0
@@ -3943,14 +3943,14 @@ Microchip MPLAB XC8 C Compiler v2.31 (Free license) build 20201012212115 Og1
   3848  0013BE  1007               	iorwf	??_LCD_Char^0,w,c
   3849  0013C0  6E8C               	movwf	140,c	;volatile
   3850  0013C2                     
-  3851                           ;LCD_16x2_4bit_mode.c: 48:  LATD2 = 1;
-  3852  0013C2  848C               	bsf	3980,2,c	;volatile
+  3851                           ;LCD_16x2_4bit_mode.c: 48:  LATD3 = 1;
+  3852  0013C2  868C               	bsf	3980,3,c	;volatile
   3853  0013C4                     
   3854                           ;LCD_16x2_4bit_mode.c: 49:  __nop();
   3855  0013C4  F000               	nop	
   3856  0013C6                     
-  3857                           ;LCD_16x2_4bit_mode.c: 50:  LATD2 = 0;
-  3858  0013C6  948C               	bcf	3980,2,c	;volatile
+  3857                           ;LCD_16x2_4bit_mode.c: 50:  LATD3 = 0;
+  3858  0013C6  968C               	bcf	3980,3,c	;volatile
   3859                           
   3860                           ;LCD_16x2_4bit_mode.c: 51:  MSdelay(3);
   3861  0013C8  0E00               	movlw	0
@@ -4136,17 +4136,17 @@ Microchip MPLAB XC8 C Compiler v2.31 (Free license) build 20201012212115 Og1
   4040  0013E4  1007               	iorwf	??_LCD_Command^0,w,c
   4041  0013E6  6E8C               	movwf	140,c	;volatile
   4042  0013E8                     
-  4043                           ;LCD_16x2_4bit_mode.c: 24:  LATD0 = 0;
-  4044  0013E8  908C               	bcf	3980,0,c	;volatile
+  4043                           ;LCD_16x2_4bit_mode.c: 24:  LATD2 = 0;
+  4044  0013E8  948C               	bcf	3980,2,c	;volatile
   4045  0013EA                     
-  4046                           ;LCD_16x2_4bit_mode.c: 25:  LATD2 = 1;
-  4047  0013EA  848C               	bsf	3980,2,c	;volatile
+  4046                           ;LCD_16x2_4bit_mode.c: 25:  LATD3 = 1;
+  4047  0013EA  868C               	bsf	3980,3,c	;volatile
   4048  0013EC                     
   4049                           ;LCD_16x2_4bit_mode.c: 26:  __nop();
   4050  0013EC  F000               	nop	
   4051  0013EE                     
-  4052                           ;LCD_16x2_4bit_mode.c: 27:  LATD2 = 0;
-  4053  0013EE  948C               	bcf	3980,2,c	;volatile
+  4052                           ;LCD_16x2_4bit_mode.c: 27:  LATD3 = 0;
+  4053  0013EE  968C               	bcf	3980,3,c	;volatile
   4054  0013F0                     
   4055                           ;LCD_16x2_4bit_mode.c: 28:  MSdelay(1);
   4056  0013F0  0E00               	movlw	0
@@ -4165,14 +4165,14 @@ Microchip MPLAB XC8 C Compiler v2.31 (Free license) build 20201012212115 Og1
   4069  00140A  1007               	iorwf	??_LCD_Command^0,w,c
   4070  00140C  6E8C               	movwf	140,c	;volatile
   4071  00140E                     
-  4072                           ;LCD_16x2_4bit_mode.c: 30:  LATD2 = 1;
-  4073  00140E  848C               	bsf	3980,2,c	;volatile
+  4072                           ;LCD_16x2_4bit_mode.c: 30:  LATD3 = 1;
+  4073  00140E  868C               	bsf	3980,3,c	;volatile
   4074  001410                     
   4075                           ;LCD_16x2_4bit_mode.c: 31:  __nop();
   4076  001410  F000               	nop	
   4077  001412                     
-  4078                           ;LCD_16x2_4bit_mode.c: 32:  LATD2 = 0;
-  4079  001412  948C               	bcf	3980,2,c	;volatile
+  4078                           ;LCD_16x2_4bit_mode.c: 32:  LATD3 = 0;
+  4079  001412  968C               	bcf	3980,3,c	;volatile
   4080                           
   4081                           ;LCD_16x2_4bit_mode.c: 33:  MSdelay(3);
   4082  001414  0E00               	movlw	0
@@ -4382,14 +4382,14 @@ Microchip MPLAB XC8 C Compiler v2.31 (Free license) build 20201012212115 Og1
   4285                           
   4286                           ;Config register CONFIG1L @ 0x300000
   4287                           ;	PLL Prescaler Selection bits
-  4288                           ;	PLLDIV = 1, No prescale (4 MHz oscillator input drives PLL directly)
+  4288                           ;	PLLDIV = 2, Divide by 2 (8 MHz oscillator input)
   4289                           ;	System Clock Postscaler Selection bits
   4290                           ;	CPUDIV = OSC1_PLL2, [Primary Oscillator Src: /1][96 MHz PLL Src: /2]
   4291                           ;	USB Clock Selection bit (used in Full-Speed USB mode only; UCFG:FSEN = 1)
   4292                           ;	USBDIV = 1, USB clock source comes directly from the primary oscillator block with no 
       +                          postscale
   4293  300000                     	org	3145728
-  4294  300000  00                 	db	0
+  4294  300000  01                 	db	1
   4295                           
   4296                           ;Config register CONFIG1H @ 0x300001
   4297                           ;	Oscillator Selection bits
@@ -4968,7 +4968,7 @@ CODE                 0      0       0       0        0.0%
 
 
 Microchip Technology PIC18 Macro Assembler V2.31 build 20201012212115 
-Symbol Table                                                                                   Fri Dec 11 18:45:49 2020
+Symbol Table                                                                                   Fri Dec 11 21:56:11 2020
 
                     __size_of_I2C_Ready 0012                      __size_of_I2C_Start 002E  
                           ?_LCD_Command 0001                             _SSPSTATbits 000FC7  
@@ -5202,7 +5202,7 @@ Symbol Table                                                                    
                                  STR_14 0819                                   STR_15 0815  
                                  STR_16 082D                                   STR_17 081D  
                                  STR_18 0829                                   ?_xtoa 001C  
-                                 _LATD0 007C60                                   _LATD2 007C62  
+                                 _LATD2 007C62                                   _LATD3 007C63  
                           vfpfcnvrt@fmt 0045                            vfpfcnvrt@llu 004D  
                                  _TRISD 000F95                                   _SSPIE 007CEB  
                                  _SSPIF 007CF3                                   _Month 00C0  
