@@ -5935,8 +5935,12 @@ char I2C_Read(char flag);
 
 
 
+
+
 int sec,min,hour;
 int Day,Date,Month,Year;
+int alarma, counter_sec, counter_min;
+int run, count_pomo, count_pomo_fail;
 
 void RTC_Read_Clock(char read_clock_address)
 {
@@ -5949,16 +5953,15 @@ void RTC_Read_Clock(char read_clock_address)
 
 }
 
-void RTC_Read_Calendar(char read_calendar_address)
+void RTC_Clock_Write(char sec, char min, char hour, char AM_PM)
 {
-    I2C_Start(0xD0);
-    I2C_Write(read_calendar_address);
-    I2C_Repeated_Start(0xD1);
-    Day = I2C_Read(0);
-    Date = I2C_Read(0);
-    Month = I2C_Read(0);
-    Year = I2C_Read(1);
-    I2C_Stop();
+    hour = (hour | AM_PM);
+ I2C_Start(0xD0);
+ I2C_Write(0);
+ I2C_Write(sec);
+ I2C_Write(min);
+ I2C_Write(hour);
+ I2C_Stop();
 }
 
 void MSdelay1(unsigned int val)
@@ -5968,23 +5971,41 @@ void MSdelay1(unsigned int val)
      for(j=0;j<165;j++);
 }
 
+int Dec2Bcd(int dec) {
+    int bdc;
+    bdc = ((dec/10) << 4) + (dec % 10);
+    return bdc;
+}
+
+int Bcd2Dec(int bcd) {
+    int dec;
+    dec = bcd + ((bcd & 0x70) >> 4) * 10;
+    return dec;
+}
+
 void main()
 {
+    TRISDbits.TRISD0 = 0;
+    TRISDbits.TRISD1 = 0;
+
+    TRISBbits.TRISB7 = 1;
 
     char secs[10],mins[10],hours[10];
-    char date[10],month[10],year[10];
+    char counters_sec[10], counters_min[10], counters_pomos[10];
     char Clock_type = 0x06;
     char AM_PM = 0x05;
-    char days[7] = {'S','M','T','W','t','F','s'};
     OSCCON=0x72;
 
     I2C_Init();
     LCD_Init();
     LCD_Clear();
     MSdelay(10);
+    alarma=1 , counter_sec=0, counter_min=0, run = 1;
+    count_pomo=0, count_pomo_fail=0;
     while(1)
     {
-        MSdelay1(2000);
+        if(alarma) {
+
         RTC_Read_Clock(0);
         I2C_Stop();
         if(hour & (1<<Clock_type)){
@@ -6014,43 +6035,63 @@ void main()
             LCD_String(mins);
             LCD_String(secs);
         }
+        alarma=0;
+        }
 
-        RTC_Read_Calendar(3);
-        I2C_Stop();
-        sprintf(date,"Cal %x-",Date);
-        sprintf(month,"%x-",Month);
-        sprintf(year,"%x ",Year);
-        LCD_String_xy(2,0,date);
-        LCD_String(month);
-        LCD_String(year);
+        MSdelay(1000);
 
+        if (!alarma) {
 
-        switch(days[Day])
-        {
-            case 'S':
-                        LCD_String("Sun");
-                        break;
-            case 'M':
-                        LCD_String("Mon");
-                        break;
-            case 'T':
-                        LCD_String("Tue");
-                        break;
-            case 'W':
-                        LCD_String("Wed");
-                        break;
-            case 't':
-                        LCD_String("Thu");
-                        break;
-            case 'F':
-                        LCD_String("Fri");
-                        break;
-            case 's':
-                        LCD_String("Sat");
-                        break;
-            default:
-                        break;
+            if (!PORTBbits.RB7) {
+                MSdelay(50);
+                counter_min = 0;
+                counter_sec = 0;
+                count_pomo_fail++;
+            }
 
+            if (run) {
+                LATDbits.LATD0 = 1;
+            } else {
+                LATDbits.LATD1 = 1;
+            }
+
+            int aux = Bcd2Dec(sec);
+            RTC_Read_Clock(0);
+            I2C_Stop();
+            if (aux < Bcd2Dec(sec)) {
+                if(counter_sec >= 59) {
+                    counter_sec = (counter_sec % 59) - 1;
+                    counter_min++;
+                    LCD_Clear();
+                }
+                if(run) {
+                    if (counter_sec == 5) {
+                        counter_sec = 0;
+                        run = 0;
+                        LATDbits.LATD0 = 0;
+                    }
+                } else {
+                    if (counter_sec == 3) {
+                        counter_sec = 0;
+                        run = 1;
+                        LATDbits.LATD1 = 0;
+                        count_pomo++;
+                    }
+                }
+
+                int print_sec = Dec2Bcd(++counter_sec);
+                int print_min = Dec2Bcd(counter_min);
+                int print_pomo = Dec2Bcd(count_pomo);
+                int print_fail = Dec2Bcd(count_pomo_fail);
+
+                sprintf(counters_min,"Tempom:%x",print_min);
+                sprintf(counters_sec,"-%x",print_sec);
+                sprintf(counters_pomos," E%x F%x", print_pomo, print_fail);
+                LCD_String_xy(2,0,counters_min);
+                LCD_String(counters_sec);
+                LCD_String(counters_pomos);
+            }
+            alarma=1;
         }
     }
 }
