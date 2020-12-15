@@ -105,8 +105,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "139 RTC.c
 [; ;RTC.c: 139:             int aux = Bcd2Dec(sec);
 [v _Bcd2Dec `(i ~T0 @X0 0 e? ]
-"175
-[; ;RTC.c: 175:                 int print_sec = Dec2Bcd(counter_sec++);
+"178
+[; ;RTC.c: 178:                 int print_sec = Dec2Bcd(counter_sec++);
 [v _Dec2Bcd `(i ~T0 @X0 0 e? ]
 "54 C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18Fxxxx_DFP/1.2.26/xc8\pic\include\proc\pic18f4550.h
 [; ;C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18Fxxxx_DFP/1.2.26/xc8\pic\include\proc\pic18f4550.h: 54: __asm("SPPDATA equ 0F62h");
@@ -904,10 +904,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _mins `uc ~T0 @X0 -> 10 `i a ]
 [v _hours `uc ~T0 @X0 -> 10 `i a ]
 "74
-[; ;RTC.c: 74:     char counters_sec[10], counters_min[10], counters_pomos[10];
+[; ;RTC.c: 74:     char counters_sec[10], counters_min[10], counters_pomos[10], counters[10];
 [v _counters_sec `uc ~T0 @X0 -> 10 `i a ]
 [v _counters_min `uc ~T0 @X0 -> 10 `i a ]
 [v _counters_pomos `uc ~T0 @X0 -> 10 `i a ]
+[v _counters `uc ~T0 @X0 -> 10 `i a ]
 "75
 [; ;RTC.c: 75:     char Clock_type = 0x06;
 [v _Clock_type `uc ~T0 @X0 1 a ]
@@ -1102,12 +1103,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! < _aux ( _Bcd2Dec _sec 385  ]
 {
 "143
-[; ;RTC.c: 143:                 if(counter_sec >= 59) {
-[e $ ! >= _counter_sec -> 59 `i 386  ]
+[; ;RTC.c: 143:                 if(counter_sec >= 60) {
+[e $ ! >= _counter_sec -> 60 `i 386  ]
 {
 "144
-[; ;RTC.c: 144:                     counter_sec = (counter_sec % 59) - 1;
-[e = _counter_sec - % _counter_sec -> 59 `i -> 1 `i ]
+[; ;RTC.c: 144:                     counter_sec = (counter_sec % 60);
+[e = _counter_sec % _counter_sec -> 60 `i ]
 "145
 [; ;RTC.c: 145:                     counter_min++;
 [e ++ _counter_min -> 1 `i ]
@@ -1123,148 +1124,157 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ ! != _run -> 0 `i 387  ]
 {
 "149
-[; ;RTC.c: 149:                     if (counter_sec == 5) {
-[e $ ! == _counter_sec -> 5 `i 388  ]
+[; ;RTC.c: 149:                     if (counter_sec == 10) {
+[e $ ! == _counter_sec -> 10 `i 388  ]
 {
 "150
-[; ;RTC.c: 150:                         counter_sec = 0;
-[e = _counter_sec -> 0 `i ]
+[; ;RTC.c: 150:                         counter_min = 0;
+[e = _counter_min -> 0 `i ]
 "151
-[; ;RTC.c: 151:                         run = 0;
-[e = _run -> 0 `i ]
+[; ;RTC.c: 151:                         counter_sec = 0;
+[e = _counter_sec -> 0 `i ]
 "152
-[; ;RTC.c: 152:                         LATDbits.LATD0 = 0;
-[e = . . _LATDbits 0 0 -> -> 0 `i `uc ]
+[; ;RTC.c: 152:                         run = 0;
+[e = _run -> 0 `i ]
 "153
-[; ;RTC.c: 153:                         LATDbits.LATD1 = 1;
-[e = . . _LATDbits 0 1 -> -> 1 `i `uc ]
+[; ;RTC.c: 153:                         LATDbits.LATD0 = 0;
+[e = . . _LATDbits 0 0 -> -> 0 `i `uc ]
 "154
-[; ;RTC.c: 154:                     }
+[; ;RTC.c: 154:                         LATDbits.LATD1 = 1;
+[e = . . _LATDbits 0 1 -> -> 1 `i `uc ]
+"155
+[; ;RTC.c: 155:                     }
 }
 [e :U 388 ]
-"155
-[; ;RTC.c: 155:                 } else {
+"156
+[; ;RTC.c: 156:                 } else {
 }
 [e $U 389  ]
 [e :U 387 ]
 {
-"156
-[; ;RTC.c: 156:                     if (counter_sec == 3) {
-[e $ ! == _counter_sec -> 3 `i 390  ]
-{
 "157
-[; ;RTC.c: 157:                         counter_sec = 0;
-[e = _counter_sec -> 0 `i ]
+[; ;RTC.c: 157:                     if (counter_sec == 5) {
+[e $ ! == _counter_sec -> 5 `i 390  ]
+{
 "158
-[; ;RTC.c: 158:                         run = 1;
-[e = _run -> 1 `i ]
+[; ;RTC.c: 158:                         counter_min = 0;
+[e = _counter_min -> 0 `i ]
 "159
-[; ;RTC.c: 159:                         LATDbits.LATD1 = 0;
-[e = . . _LATDbits 0 1 -> -> 0 `i `uc ]
+[; ;RTC.c: 159:                         counter_sec = 0;
+[e = _counter_sec -> 0 `i ]
 "160
-[; ;RTC.c: 160:                         LATDbits.LATD0 = 1;
-[e = . . _LATDbits 0 0 -> -> 1 `i `uc ]
+[; ;RTC.c: 160:                         run = 1;
+[e = _run -> 1 `i ]
 "161
-[; ;RTC.c: 161:                         count_pomo++;
-[e ++ _count_pomo -> 1 `i ]
+[; ;RTC.c: 161:                         LATDbits.LATD1 = 0;
+[e = . . _LATDbits 0 1 -> -> 0 `i `uc ]
 "162
-[; ;RTC.c: 162:                     }
+[; ;RTC.c: 162:                         LATDbits.LATD0 = 1;
+[e = . . _LATDbits 0 0 -> -> 1 `i `uc ]
+"163
+[; ;RTC.c: 163:                         count_pomo++;
+[e ++ _count_pomo -> 1 `i ]
+"164
+[; ;RTC.c: 164:                     }
 }
 [e :U 390 ]
-"163
-[; ;RTC.c: 163:                 }
+"165
+[; ;RTC.c: 165:                 }
 }
 [e :U 389 ]
-"164
-[; ;RTC.c: 164:                 if (counter_sec == 0 && run == 0) {
+"166
+[; ;RTC.c: 166:                 if (counter_sec == 0 && run == 0) {
 [e $ ! && == _counter_sec -> 0 `i == _run -> 0 `i 391  ]
 {
-"165
-[; ;RTC.c: 165:                     LCD_Clear();
-[e ( _LCD_Clear ..  ]
-"166
-[; ;RTC.c: 166:                     sprintf(counters_min, "----Descanso---");
-[e ( _sprintf (1 , &U _counters_min :s 9C ]
 "167
-[; ;RTC.c: 167:                     LCD_String_xy(0, 0, counters_min);
-[e ( _LCD_String_xy (3 , , -> -> 0 `i `uc -> -> 0 `i `uc -> &U _counters_min `*Cuc ]
-"168
-[; ;RTC.c: 168:                     MSdelay(1000);
-[e ( _MSdelay (1 -> -> 1000 `i `ui ]
-"169
-[; ;RTC.c: 169:                     LCD_Clear();
+[; ;RTC.c: 167:                     LCD_Clear();
 [e ( _LCD_Clear ..  ]
+"168
+[; ;RTC.c: 168:                     sprintf(counters, "----Descanso----");
+[e ( _sprintf (1 , &U _counters :s 9C ]
+"169
+[; ;RTC.c: 169:                     LCD_String_xy(0, 0, counters);
+[e ( _LCD_String_xy (3 , , -> -> 0 `i `uc -> -> 0 `i `uc -> &U _counters `*Cuc ]
 "170
 [; ;RTC.c: 170:                     MSdelay(1000);
 [e ( _MSdelay (1 -> -> 1000 `i `ui ]
 "171
-[; ;RTC.c: 171:                     LCD_String_xy(0, 0, counters_min);
-[e ( _LCD_String_xy (3 , , -> -> 0 `i `uc -> -> 0 `i `uc -> &U _counters_min `*Cuc ]
+[; ;RTC.c: 171:                     LCD_Clear();
+[e ( _LCD_Clear ..  ]
 "172
 [; ;RTC.c: 172:                     MSdelay(1000);
 [e ( _MSdelay (1 -> -> 1000 `i `ui ]
 "173
-[; ;RTC.c: 173:                 }
+[; ;RTC.c: 173:                     LCD_String_xy(0, 0, counters);
+[e ( _LCD_String_xy (3 , , -> -> 0 `i `uc -> -> 0 `i `uc -> &U _counters `*Cuc ]
+"174
+[; ;RTC.c: 174:                     MSdelay(1000);
+[e ( _MSdelay (1 -> -> 1000 `i `ui ]
+"175
+[; ;RTC.c: 175:                     LCD_Clear();
+[e ( _LCD_Clear ..  ]
+"176
+[; ;RTC.c: 176:                 }
 }
 [e :U 391 ]
-"175
-[; ;RTC.c: 175:                 int print_sec = Dec2Bcd(counter_sec++);
+"178
+[; ;RTC.c: 178:                 int print_sec = Dec2Bcd(counter_sec++);
 [v _print_sec `i ~T0 @X0 1 a ]
 [e = _print_sec ( _Dec2Bcd ++ _counter_sec -> 1 `i ]
-"176
-[; ;RTC.c: 176:                 int print_min = Dec2Bcd(counter_min);
+"179
+[; ;RTC.c: 179:                 int print_min = Dec2Bcd(counter_min);
 [v _print_min `i ~T0 @X0 1 a ]
 [e = _print_min ( _Dec2Bcd _counter_min ]
-"177
-[; ;RTC.c: 177:                 int print_pomo = Dec2Bcd(count_pomo);
+"180
+[; ;RTC.c: 180:                 int print_pomo = Dec2Bcd(count_pomo);
 [v _print_pomo `i ~T0 @X0 1 a ]
 [e = _print_pomo ( _Dec2Bcd _count_pomo ]
-"178
-[; ;RTC.c: 178:                 int print_fail = Dec2Bcd(count_pomo_fail);
+"181
+[; ;RTC.c: 181:                 int print_fail = Dec2Bcd(count_pomo_fail);
 [v _print_fail `i ~T0 @X0 1 a ]
 [e = _print_fail ( _Dec2Bcd _count_pomo_fail ]
-"180
-[; ;RTC.c: 180:                 sprintf(counters_min,"Tempom:%x",print_min);
-[e ( _sprintf (1 , (. , &U _counters_min :s 10C _print_min ]
-"181
-[; ;RTC.c: 181:                 sprintf(counters_sec,"-%x",print_sec);
-[e ( _sprintf (1 , (. , &U _counters_sec :s 11C _print_sec ]
-"182
-[; ;RTC.c: 182:                 sprintf(counters_pomos," E%x F%x", print_pomo, print_fail);
-[e ( _sprintf (1 , , (. , &U _counters_pomos :s 12C _print_pomo _print_fail ]
 "183
-[; ;RTC.c: 183:                 LCD_String_xy(2,0,counters_min);
-[e ( _LCD_String_xy (3 , , -> -> 2 `i `uc -> -> 0 `i `uc -> &U _counters_min `*Cuc ]
+[; ;RTC.c: 183:                 sprintf(counters_min,"Temp:%x",print_min);
+[e ( _sprintf (1 , (. , &U _counters_min :s 10C _print_min ]
 "184
-[; ;RTC.c: 184:                 LCD_String(counters_sec);
-[e ( _LCD_String (1 -> &U _counters_sec `*Cuc ]
+[; ;RTC.c: 184:                 sprintf(counters_sec,"-%x",print_sec);
+[e ( _sprintf (1 , (. , &U _counters_sec :s 11C _print_sec ]
 "185
-[; ;RTC.c: 185:                 LCD_String(counters_pomos);
-[e ( _LCD_String (1 -> &U _counters_pomos `*Cuc ]
+[; ;RTC.c: 185:                 sprintf(counters_pomos," E%x F%x", print_pomo, print_fail);
+[e ( _sprintf (1 , , (. , &U _counters_pomos :s 12C _print_pomo _print_fail ]
 "186
-[; ;RTC.c: 186:             }
+[; ;RTC.c: 186:                 LCD_String_xy(2,0,counters_min);
+[e ( _LCD_String_xy (3 , , -> -> 2 `i `uc -> -> 0 `i `uc -> &U _counters_min `*Cuc ]
+"187
+[; ;RTC.c: 187:                 LCD_String(counters_sec);
+[e ( _LCD_String (1 -> &U _counters_sec `*Cuc ]
+"188
+[; ;RTC.c: 188:                 LCD_String(counters_pomos);
+[e ( _LCD_String (1 -> &U _counters_pomos `*Cuc ]
+"189
+[; ;RTC.c: 189:             }
 }
 [e :U 385 ]
-"187
-[; ;RTC.c: 187:             alarma=1;
+"190
+[; ;RTC.c: 190:             alarma=1;
 [e = _alarma -> 1 `i ]
-"188
-[; ;RTC.c: 188:         }
+"191
+[; ;RTC.c: 191:         }
 }
 [e :U 381 ]
-"189
-[; ;RTC.c: 189:     }
+"192
+[; ;RTC.c: 192:     }
 }
 [e :U 373 ]
 [e $U 374  ]
 [e :U 375 ]
-"190
-[; ;RTC.c: 190: }
+"193
+[; ;RTC.c: 193: }
 [e :UE 372 ]
 }
 [p f _sprintf 12582912 ]
 [a 12C 32 69 37 120 32 70 37 120 0 ]
-[a 10C 84 101 109 112 111 109 58 37 120 0 ]
+[a 10C 84 101 109 112 58 37 120 0 ]
 [a 11C 45 37 120 0 ]
 [a 1C 80 77 0 ]
 [a 2C 65 77 0 ]
@@ -1272,6 +1282,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 8C 84 105 109 58 37 120 58 0 ]
 [a 4C 37 120 58 0 ]
 [a 7C 37 120 58 0 ]
-[a 9C 45 45 45 45 68 101 115 99 97 110 115 111 45 45 45 0 ]
+[a 9C 45 45 45 45 68 101 115 99 97 110 115 111 45 45 45 45 0 ]
 [a 3C 37 120 32 0 ]
 [a 6C 37 120 32 0 ]

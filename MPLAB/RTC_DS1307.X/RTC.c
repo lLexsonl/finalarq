@@ -71,7 +71,7 @@ void main()
     init_leds_botons();
     
     char secs[10],mins[10],hours[10];
-    char counters_sec[10], counters_min[10], counters_pomos[10];
+    char counters_sec[10], counters_min[10], counters_pomos[10], counters[10];
     char Clock_type = 0x06;
     char AM_PM = 0x05;
     
@@ -140,20 +140,22 @@ void main()
             RTC_Read_Clock(0);              /*gives second,minute and hour*/
             I2C_Stop();
             if (aux < Bcd2Dec(sec)) {
-                if(counter_sec >= 59) {
-                    counter_sec = (counter_sec % 59) - 1;
+                if(counter_sec >= 60) {
+                    counter_sec = (counter_sec % 60);
                     counter_min++;
                     LCD_Clear();
                 }
                 if(run) {
-                    if (counter_sec == 5) {
+                    if (counter_sec  == 10) {
+                        counter_min = 0;
                         counter_sec = 0;
                         run = 0;
                         LED1 = OFF;
                         LED2 = ON;
                     }
                 } else {
-                    if (counter_sec == 3) {
+                    if (counter_sec == 5) {
+                        counter_min = 0;
                         counter_sec = 0;
                         run = 1;
                         LED2 = OFF;
@@ -163,12 +165,12 @@ void main()
                 }
                 if (counter_sec == 0 && run == 0) {
                     LCD_Clear();
-                    sprintf(counters_min, "----Descanso---");
-                    LCD_String_xy(0, 0, counters_min);
+                    sprintf(counters, "----Descanso----");
+                    LCD_String_xy(0, 0, counters);
                     MSdelay(1000);
                     LCD_Clear();
                     MSdelay(1000);
-                    LCD_String_xy(0, 0, counters_min);
+                    LCD_String_xy(0, 0, counters);
                     MSdelay(1000);
                     LCD_Clear();
                 }
@@ -178,7 +180,7 @@ void main()
                 int print_pomo = Dec2Bcd(count_pomo);
                 int print_fail = Dec2Bcd(count_pomo_fail);
                 
-                sprintf(counters_min,"Tempom:%x",print_min);
+                sprintf(counters_min,"Temp:%x",print_min);
                 sprintf(counters_sec,"-%x",print_sec);
                 sprintf(counters_pomos," E%x F%x", print_pomo, print_fail);
                 LCD_String_xy(2,0,counters_min);
