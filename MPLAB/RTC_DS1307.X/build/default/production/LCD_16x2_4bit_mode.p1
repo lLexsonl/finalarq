@@ -2,11 +2,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 "4001 C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18Fxxxx_DFP/1.2.26/xc8\pic\include\proc\pic18f4550.h
 [; ;C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18Fxxxx_DFP/1.2.26/xc8\pic\include\proc\pic18f4550.h: 4001: extern volatile unsigned char TRISD __attribute__((address(0xF95)));
 [v _TRISD `Vuc ~T0 @X0 0 e@3989 ]
-"27 ./16x2_LCD_4bit_File.h
-[; ;./16x2_LCD_4bit_File.h: 27: void MSdelay(unsigned int );
+"40 ./16x2_LCD_4bit_File.h
+[; ;./16x2_LCD_4bit_File.h: 40: void MSdelay(unsigned int );
 [v _MSdelay `(v ~T0 @X0 0 ef1`ui ]
-"29
-[; ;./16x2_LCD_4bit_File.h: 29: void LCD_Command(unsigned char );
+"49
+[; ;./16x2_LCD_4bit_File.h: 49: void LCD_Command(unsigned char );
 [v _LCD_Command `(v ~T0 @X0 0 ef1`uc ]
 "3263 C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18Fxxxx_DFP/1.2.26/xc8\pic\include\proc\pic18f4550.h
 [; ;C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18Fxxxx_DFP/1.2.26/xc8\pic\include\proc\pic18f4550.h: 3263: extern volatile unsigned char LATD __attribute__((address(0xF8C)));
@@ -895,4 +895,46 @@ Version 4.0 HI-TECH Software Intermediate Code
 "93
 [; ;LCD_16x2_4bit_mode.c: 93: }
 [e :UE 378 ]
+}
+"95
+[; ;LCD_16x2_4bit_mode.c: 95: int Dec2Bcd(int dec) {
+[v _Dec2Bcd `(i ~T0 @X0 1 ef1`i ]
+{
+[e :U _Dec2Bcd ]
+[v _dec `i ~T0 @X0 1 r1 ]
+[f ]
+"96
+[; ;LCD_16x2_4bit_mode.c: 96:     int bdc;
+[v _bdc `i ~T0 @X0 1 a ]
+"97
+[; ;LCD_16x2_4bit_mode.c: 97:     bdc = ((dec/10) << 4) + (dec % 10);
+[e = _bdc + << / _dec -> 10 `i -> 4 `i % _dec -> 10 `i ]
+"98
+[; ;LCD_16x2_4bit_mode.c: 98:     return bdc;
+[e ) _bdc ]
+[e $UE 386  ]
+"99
+[; ;LCD_16x2_4bit_mode.c: 99: }
+[e :UE 386 ]
+}
+"101
+[; ;LCD_16x2_4bit_mode.c: 101: int Bcd2Dec(int bcd) {
+[v _Bcd2Dec `(i ~T0 @X0 1 ef1`i ]
+{
+[e :U _Bcd2Dec ]
+[v _bcd `i ~T0 @X0 1 r1 ]
+[f ]
+"102
+[; ;LCD_16x2_4bit_mode.c: 102:     int dec;
+[v _dec `i ~T0 @X0 1 a ]
+"103
+[; ;LCD_16x2_4bit_mode.c: 103:     dec = bcd + ((bcd & 0x70) >> 4) * 10;
+[e = _dec + _bcd * >> & _bcd -> 112 `i -> 4 `i -> 10 `i ]
+"104
+[; ;LCD_16x2_4bit_mode.c: 104:     return dec;
+[e ) _dec ]
+[e $UE 387  ]
+"105
+[; ;LCD_16x2_4bit_mode.c: 105: }
+[e :UE 387 ]
 }

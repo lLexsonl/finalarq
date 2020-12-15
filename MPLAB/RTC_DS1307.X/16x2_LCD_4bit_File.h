@@ -17,18 +17,52 @@
 #define _XTAL_FREQ 8000000
 /*********************Definition of Ports********************************/
 
-#define RS LATD2                    /*PIN 0 of PORTB is assigned for register select Pin of LCD*/
-#define EN LATD3                 /*PIN 1 of PORTB is assigned for enable Pin of LCD */
-#define ldata LATD                  /*PORTB(PB4-PB7) is assigned for LCD Data Output*/ 
+#define RS LATD2            
+#define EN LATD3           
+#define ldata LATD
 #define LCD_Port TRISD
+#define LED1_CONF TRISDbits.TRISD0
+#define LED2_CONF TRISDbits.TRISD1
+#define PAUSE_CONF TRISBbits.TRISB7
+#define INPUNT 1
+#define OUTPUT 0
+#define PAUSE PORTBbits.RB7
+#define LED1 LATDbits.LATD0
+#define LED2 LATDbits.LATD1
+#define ON 1
+#define OFF 0
 
 /*********************Proto-Type Declaration*****************************/
-
-void MSdelay(unsigned int );        /*Generate delay in ms*/
-void LCD_Init();                    /*Initialize LCD*/
-void LCD_Command(unsigned char );   /*Send command to LCD*/
-void LCD_Char(unsigned char x);     /*Send data to LCD*/
-void LCD_String(const char *);      /*Display data string on LCD*/
+/**
+ * Genera un retraso en milisegundos
+ * @param milisegundos de retraso
+ */
+void MSdelay(unsigned int );
+/**
+ * Inicializa el LCD
+ */
+void LCD_Init();
+/**
+ * Envia un comando al LCD
+ * @param Comando a enviar
+ */
+void LCD_Command(unsigned char );
+/**
+ * Envia un caracter al LCD
+ * @param x Caracter a enviar
+ */
+void LCD_Char(unsigned char x);
+/**
+ * Desplega un String en el LCD
+ * @param String a mostrar en el LCD
+ */
+void LCD_String(const char *);
+/**
+ * Muestra un String en el LCD en las coordenadas indicadas
+ * @param Coordenada para la fila
+ * @param Coordendad para la columna
+ * @param String a mostrar
+ */
 void LCD_String_xy(char, char , const char *);
 void LCD_Clear();                   /*Clear LCD Screen*/
 

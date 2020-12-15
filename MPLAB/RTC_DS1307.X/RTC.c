@@ -20,6 +20,10 @@ int Day,Date,Month,Year;
 int alarma, counter_sec, counter_min;
 int run, count_pomo, count_pomo_fail;
 
+/**
+ * Obtiene la hora exacta y los almacena en las variables hora, minutos y segundos.
+ * @param read_clock_address
+ */
 void RTC_Read_Clock(char read_clock_address)
 {
     I2C_Start(device_id_write);
@@ -31,6 +35,13 @@ void RTC_Read_Clock(char read_clock_address)
     
 }
 
+/**
+ * Recibe una hora se la asigna al RTC
+ * @param sec segundos
+ * @param min minutos
+ * @param hour hora
+ * @param AM_PM formato de la hora
+ */
 void RTC_Clock_Write(char sec, char min, char hour, char AM_PM)					/* function for clock */
 {
     hour = (hour | AM_PM);        /* whether it is AM or PM */
@@ -42,48 +53,40 @@ void RTC_Clock_Write(char sec, char min, char hour, char AM_PM)					/* function 
 	I2C_Stop();				      /* stop I2C communication */
 }
 
-void MSdelay1(unsigned int val)
-{
- unsigned int i,j;
- for(i=0;i<val;i++)
-     for(j=0;j<165;j++);             /*This count Provide delay of 1 ms for 8MHz Frequency */
+/**
+ * Inicializacion de los leds y botones
+ */
+void init_leds_botons(void) {
+    LED1_CONF = OUTPUT;
+    LED2_CONF = OUTPUT;
+
+    PAUSE_CONF = INPUNT;
 }
 
-int Dec2Bcd(int dec) {
-    int bdc;
-    bdc = ((dec/10) << 4) + (dec % 10);
-    return bdc;
-}
-
-int Bcd2Dec(int bcd) {
-    int dec;
-    dec = bcd + ((bcd & 0x70) >> 4) * 10;
-    return dec;
-}
-
+/**
+ * Metodo main que contiene las reglas de negocio
+ */
 void main()
 {
-    TRISDbits.TRISD0 = 0;
-    TRISDbits.TRISD1 = 0;
-    
-    TRISBbits.TRISB7 = 1;
+    init_leds_botons();
     
     char secs[10],mins[10],hours[10];
     char counters_sec[10], counters_min[10], counters_pomos[10];
     char Clock_type = 0x06;
     char AM_PM = 0x05;
+    
     OSCCON=0x72;                    /*Use internal oscillator and 
                                      *set frequency to 8 MHz*/ 
     I2C_Init();                     /*initialize I2C protocol*/
     LCD_Init();                     /*initialize LCD16x2*/    
     LCD_Clear();
     MSdelay(10);
+    
     alarma=1 , counter_sec=0, counter_min=0, run = 1;
     count_pomo=0, count_pomo_fail=0;
     while(1)
     {
         if(alarma) {
-        //MSdelay1(2000);
         RTC_Read_Clock(0);              /*gives second,minute and hour*/
         I2C_Stop();
         if(hour & (1<<Clock_type)){     /* check clock is 12hr or 24hr */
@@ -120,7 +123,7 @@ void main()
         
         if (!alarma) {
             
-            if (!PORTBbits.RB7) {
+            if (!PAUSE) {
                 MSdelay(50);
                 counter_min = 0;
                 counter_sec = 0;
@@ -128,9 +131,9 @@ void main()
             }
             
             if (run) {
-                LATDbits.LATD0 = 1;
+                LED1 = ON;
             } else {
-                LATDbits.LATD1 = 1;
+                LED2 = ON;
             }
             
             int aux = Bcd2Dec(sec);
@@ -146,18 +149,31 @@ void main()
                     if (counter_sec == 5) {
                         counter_sec = 0;
                         run = 0;
-                        LATDbits.LATD0 = 0;
+                        LED1 = OFF;
+                        LED2 = ON;
                     }
                 } else {
                     if (counter_sec == 3) {
                         counter_sec = 0;
                         run = 1;
-                        LATDbits.LATD1 = 0;
+                        LED2 = OFF;
+                        LED1 = ON;
                         count_pomo++;
                     }
                 }
+                if (counter_sec == 0 && run == 0) {
+                    LCD_Clear();
+                    sprintf(counters_min, "----Descanso---");
+                    LCD_String_xy(0, 0, counters_min);
+                    MSdelay(1000);
+                    LCD_Clear();
+                    MSdelay(1000);
+                    LCD_String_xy(0, 0, counters_min);
+                    MSdelay(1000);
+                    LCD_Clear();
+                }
                 
-                int print_sec = Dec2Bcd(++counter_sec);
+                int print_sec = Dec2Bcd(counter_sec++);
                 int print_min = Dec2Bcd(counter_min);
                 int print_pomo = Dec2Bcd(count_pomo);
                 int print_fail = Dec2Bcd(count_pomo_fail);

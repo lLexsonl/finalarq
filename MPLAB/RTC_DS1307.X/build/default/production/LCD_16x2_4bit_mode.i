@@ -5697,12 +5697,33 @@ extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 
 #pragma config EBTRB = OFF
 # 15 "./16x2_LCD_4bit_File.h" 2
-# 27 "./16x2_LCD_4bit_File.h"
+# 40 "./16x2_LCD_4bit_File.h"
 void MSdelay(unsigned int );
+
+
+
 void LCD_Init();
+
+
+
+
 void LCD_Command(unsigned char );
+
+
+
+
 void LCD_Char(unsigned char x);
+
+
+
+
 void LCD_String(const char *);
+
+
+
+
+
+
 void LCD_String_xy(char, char , const char *);
 void LCD_Clear();
 # 6 "LCD_16x2_4bit_mode.c" 2
@@ -5793,4 +5814,16 @@ void MSdelay(unsigned int val)
  unsigned int i,j;
  for(i=0;i<val;i++)
      for(j=0;j<165;j++);
+}
+
+int Dec2Bcd(int dec) {
+    int bdc;
+    bdc = ((dec/10) << 4) + (dec % 10);
+    return bdc;
+}
+
+int Bcd2Dec(int bcd) {
+    int dec;
+    dec = bcd + ((bcd & 0x70) >> 4) * 10;
+    return dec;
 }

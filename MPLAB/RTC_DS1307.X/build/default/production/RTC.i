@@ -5905,12 +5905,33 @@ extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 
 #pragma config EBTRB = OFF
 # 15 "./16x2_LCD_4bit_File.h" 2
-# 27 "./16x2_LCD_4bit_File.h"
+# 40 "./16x2_LCD_4bit_File.h"
 void MSdelay(unsigned int );
+
+
+
 void LCD_Init();
+
+
+
+
 void LCD_Command(unsigned char );
+
+
+
+
 void LCD_Char(unsigned char x);
+
+
+
+
 void LCD_String(const char *);
+
+
+
+
+
+
 void LCD_String_xy(char, char , const char *);
 void LCD_Clear();
 # 9 "RTC.c" 2
@@ -5942,6 +5963,10 @@ int Day,Date,Month,Year;
 int alarma, counter_sec, counter_min;
 int run, count_pomo, count_pomo_fail;
 
+
+
+
+
 void RTC_Read_Clock(char read_clock_address)
 {
     I2C_Start(0xD0);
@@ -5952,7 +5977,7 @@ void RTC_Read_Clock(char read_clock_address)
     hour= I2C_Read(1);
 
 }
-
+# 45 "RTC.c"
 void RTC_Clock_Write(char sec, char min, char hour, char AM_PM)
 {
     hour = (hour | AM_PM);
@@ -5964,48 +5989,40 @@ void RTC_Clock_Write(char sec, char min, char hour, char AM_PM)
  I2C_Stop();
 }
 
-void MSdelay1(unsigned int val)
-{
- unsigned int i,j;
- for(i=0;i<val;i++)
-     for(j=0;j<165;j++);
-}
 
-int Dec2Bcd(int dec) {
-    int bdc;
-    bdc = ((dec/10) << 4) + (dec % 10);
-    return bdc;
-}
 
-int Bcd2Dec(int bcd) {
-    int dec;
-    dec = bcd + ((bcd & 0x70) >> 4) * 10;
-    return dec;
-}
 
-void main()
-{
+void init_leds_botons(void) {
     TRISDbits.TRISD0 = 0;
     TRISDbits.TRISD1 = 0;
 
     TRISBbits.TRISB7 = 1;
+}
+
+
+
+
+void main()
+{
+    init_leds_botons();
 
     char secs[10],mins[10],hours[10];
     char counters_sec[10], counters_min[10], counters_pomos[10];
     char Clock_type = 0x06;
     char AM_PM = 0x05;
+
     OSCCON=0x72;
 
     I2C_Init();
     LCD_Init();
     LCD_Clear();
     MSdelay(10);
+
     alarma=1 , counter_sec=0, counter_min=0, run = 1;
     count_pomo=0, count_pomo_fail=0;
     while(1)
     {
         if(alarma) {
-
         RTC_Read_Clock(0);
         I2C_Stop();
         if(hour & (1<<Clock_type)){
@@ -6069,17 +6086,29 @@ void main()
                         counter_sec = 0;
                         run = 0;
                         LATDbits.LATD0 = 0;
+                        LATDbits.LATD1 = 1;
                     }
                 } else {
                     if (counter_sec == 3) {
                         counter_sec = 0;
                         run = 1;
                         LATDbits.LATD1 = 0;
+                        LATDbits.LATD0 = 1;
                         count_pomo++;
                     }
                 }
+                if (counter_sec == 0 && run == 0) {
+                    LCD_Clear();
+                    sprintf(counters_min, "----Descanso---");
+                    LCD_String_xy(0, 0, counters_min);
+                    MSdelay(1000);
+                    LCD_Clear();
+                    MSdelay(1000);
+                    LCD_String_xy(0, 0, counters_min);
+                    MSdelay(1000);
+                }
 
-                int print_sec = Dec2Bcd(++counter_sec);
+                int print_sec = Dec2Bcd(counter_sec++);
                 int print_min = Dec2Bcd(counter_min);
                 int print_pomo = Dec2Bcd(count_pomo);
                 int print_fail = Dec2Bcd(count_pomo_fail);

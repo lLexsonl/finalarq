@@ -92,3 +92,14 @@ void MSdelay(unsigned int val)
      for(j=0;j<165;j++);             /*This count Provide delay of 1 ms for 8MHz Frequency */
 }
 
+int Dec2Bcd(int dec) {
+    int bdc;
+    bdc = ((dec/10) << 4) + (dec % 10);
+    return bdc;
+}
+
+int Bcd2Dec(int bcd) {
+    int dec;
+    dec = bcd + ((bcd & 0x70) >> 4) * 10;
+    return dec;
+}
